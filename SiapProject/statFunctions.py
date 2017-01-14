@@ -42,6 +42,42 @@ from scipy import ndimage
 from io import open
 
 
+class FixedWidthVariables(object):
+    """Represents a set of variables in a fixed width file."""
+
+    def __init__(self, variables, index_base=0):
+        """Initializes.
+
+        variables: DataFrame
+        index_base: are the indices 0 or 1 based?
+
+        Attributes:
+        colspecs: list of (start, end) index tuples
+        names: list of string variable names
+        """
+        self.variables = variables
+
+        # note: by default, subtract 1 from colspecs
+        self.colspecs = variables[['start', 'end']] - index_base
+
+        # convert colspecs to a list of pair of int
+        self.colspecs = self.colspecs.astype(np.int).values.tolist()
+        self.names = variables['name']
+
+    def ReadFixedWidth(self, filename, **options):
+        """Reads a fixed width ASCII file.
+
+        filename: string filename
+
+        returns: DataFrame
+        """
+        df = pandas.read_fwf(filename,
+                             colspecs=self.colspecs,
+                             names=self.names,
+                             **options)
+        return df
+
+
 def ReadStataDct(dct_file, **options):
     """Reads a Stata dictionary file.
 
