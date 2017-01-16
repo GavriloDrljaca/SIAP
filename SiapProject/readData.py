@@ -77,6 +77,8 @@ def CleanFemPreg(df):
     # NOTE: creating a new column requires dictionary syntax,
     # not attribute assignment (like df.totalwgt_lb)
     df['totalwgt_lb'] = df.birthwgt_lb + df.birthwgt_oz / 16.0
+    # total weight in kg
+    df['totalwgt_kg'] = df.totalwgt_lb / 2.20462
 
     # due to a bug in ReadStataDct, the last variable gets clipped;
     # so for now set it to NaN
@@ -132,7 +134,8 @@ def main(script):
     # read and validate the pregnancy file
     preg = ReadFemPreg()
     print(preg.shape)
-
+    print(preg.totalwgt_kg.mean())
+    print(preg.head())
     assert len(preg) == 13593
     assert preg.caseid[13592] == 12571
     assert preg.pregordr.value_counts()[1] == 5033
