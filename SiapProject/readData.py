@@ -27,6 +27,27 @@ def ReadFemResp(dct_file='data/2002FemResp.dct',
     CleanFemResp(df)
     return df
 
+def GetTestData(df):
+    """
+    Returns test data from the all the data, aprox 20%
+    :param df:
+    :return:
+    """
+    df_test = df.ix[len(df)-int(len(df)*0.2):]
+    return df_test
+
+
+def GetTrainingData(df):
+    """
+    Returns test data from the all the data, aprox 80%
+    :param df:
+    :return:
+    """
+    dfLength = len(df.index)
+    dfLengthTraining = int(dfLength*0.8)
+    df_test = df[:dfLengthTraining]
+    return df_test
+
 
 def CleanFemResp(df):
     """Recodes variables from the respondent frame.
